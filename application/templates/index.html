@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}Dumb Password{% endblock %}
+{% block main %}
+    <h3>Select mechanism</h3>
+    <ul>
+    {% for t in types %}
+        <li><a href="/login/{{t.code}}">{{t.name}}</a>
+    {% endfor %}
+    </ul>
+{% endblock %}
