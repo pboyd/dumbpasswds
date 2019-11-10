@@ -1,15 +1,14 @@
 {% extends "layout.html" %}
-{% block title %}{{type.name}} - Login{% endblock %}
+{% block title %}{{type.name}} - Sign Up{% endblock %}
 {% block main %}
-<h3>Login {{type.name}}</h3>
-<form method="POST" action="/login/{{type.code}}">
+<h3>Sign up {{type.name}}</h3>
+<form method="POST" action="/signup/{{type.code}}">
     {% if error %}
     <p class="error">{{error}}</p>
     {% endif %}
 
     <p><label for="username">Username:</label> <input type="text" id="username" name="username"/></p>
     <p><label for="password">Password:</label> <input type="password" id="password" name="password"/></p>
-    <input type="submit" value="Login"/>
+    <input type="submit" value="Sign Up"/>
 </form>
-<p><a href="/signup/{{type.code}}">Create an accouont</a></p>
 {% endblock %}

@@ -1,8 +1,10 @@
+#!/usr/bin/env python
+
 from application import AllTypes
-import sqlite3
+import psycopg2
 
 if __name__ == "__main__":
-    db = sqlite3.connect('database.db')
+    db = psycopg2.connect('')
     cursor = db.cursor()
 
     for t in AllTypes:
