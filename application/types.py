@@ -1,7 +1,9 @@
 from .plaintext import PlainText
+from .encrypted import Encrypted
 
 AllTypes = [
         PlainText,
+        Encrypted,
 ]
 
 AllTypesDict = {}
