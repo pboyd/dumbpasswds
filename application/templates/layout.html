@@ -12,7 +12,7 @@
                 <div class="navbar-start">
                     {% for t in types %}
                         <a
-                            class="navbar-item{% if t.code is eq(type.code) %} is-active{% endif %}"
+                            class="navbar-item{% if type is defined and t.code is eq(type.code) %} is-active{% endif %}"
                             href="/login/{{t.code}}">{{t.name}}</a>
                     {% endfor %}
                 </div>

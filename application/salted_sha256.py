@@ -3,19 +3,19 @@ from .error import UserError
 import hashlib
 import secrets
 
-class SaltedHash:
-    code = "salted-hash"
-    name = "Salted Hash"
+class SaltedSHA256:
+    code = "salted_sha256"
+    name = "Salted SHA256"
 
     schema = '''
-    CREATE TABLE IF NOT EXISTS salted_hash (
+    CREATE TABLE IF NOT EXISTS salted_sha256 (
         username VARCHAR(16) PRIMARY KEY,
         password VARCHAR(96)
     )
     '''
 
     def login(self, cursor, username, password):
-        cursor.execute("SELECT password FROM salted_hash WHERE username=%s", (username,))
+        cursor.execute("SELECT password FROM salted_sha256 WHERE username=%s", (username,))
         result = cursor.fetchone()
         if result == None:
             raise UserError("Invalid username or password.")
@@ -27,13 +27,13 @@ class SaltedHash:
         if len(password) < 8:
             raise UserError("Password must contain more than 8 characters.")
 
-        cursor.execute("SELECT count(*) FROM salted_hash WHERE username=%s", (username,))
+        cursor.execute("SELECT count(*) FROM salted_sha256 WHERE username=%s", (username,))
         result = cursor.fetchone()
         if result[0] > 0:
             raise UserError("Username already taken.")
 
         hashed = self.hash_password(password)
-        cursor.execute("INSERT INTO salted_hash (username, password) VALUES (%s, %s)", (username, hashed))
+        cursor.execute("INSERT INTO salted_sha256 (username, password) VALUES (%s, %s)", (username, hashed))
 
     def hash_password(self, password, salt=None):
         if salt == None:
