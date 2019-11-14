@@ -1,4 +1,4 @@
-from .error import UserError
+from .error import UsernameTaken, BadLogin, PasswordTooShort, PasswordTooLong
 
 import nacl.secret
 
@@ -17,23 +17,23 @@ class Encrypted:
         cursor.execute("SELECT password FROM encrypted WHERE username=%s", (username,))
         result = cursor.fetchone()
         if result == None:
-            raise UserError("Invalid username or password.")
+            raise BadLogin()
 
         decrypted = self.decrypt_password(result[0])
         if decrypted != password:
-            raise UserError("Invalid username or password.")
+            raise BadLogin()
 
     def create_account(self, cursor, username, password):
         if len(password) < 8:
-            raise UserError("Password must contain more than 8 characters.")
+            raise PasswordTooShort()
 
         if len(password) > 16:
-            raise UserError("Password must contain fewer than 16 characters.")
+            raise PasswordTooLong()
 
         cursor.execute("SELECT count(*) FROM encrypted WHERE username=%s", (username,))
         result = cursor.fetchone()
         if result[0] > 0:
-            raise UserError("Username already taken.")
+            raise UsernameTaken()
 
         encrypted = self.encrypt_password(password)
         cursor.execute("INSERT INTO encrypted (username, password) VALUES (%s, %s)", (username, encrypted))

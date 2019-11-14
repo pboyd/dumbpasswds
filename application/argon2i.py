@@ -1,4 +1,4 @@
-from .error import UserError
+from .error import UsernameTaken, BadLogin, PasswordTooShort
 
 import nacl.pwhash
 import secrets
@@ -18,19 +18,19 @@ class Argon2i:
         cursor.execute("SELECT password FROM argon2i WHERE username=%s", (username,))
         result = cursor.fetchone()
         if result == None:
-            raise UserError("Invalid username or password.")
+            raise BadLogin()
 
         if not self.check_password(result[0], password):
-            raise UserError("Invalid username or password.")
+            raise BadLogin()
 
     def create_account(self, cursor, username, password):
         if len(password) < 8:
-            raise UserError("Password must contain more than 8 characters.")
+            raise PasswordTooShort()
 
         cursor.execute("SELECT count(*) FROM argon2i WHERE username=%s", (username,))
         result = cursor.fetchone()
         if result[0] > 0:
-            raise UserError("Username already taken.")
+            raise UsernameTaken()
 
         hashed = self.hash_password(password)
         cursor.execute("INSERT INTO argon2i (username, password) VALUES (%s, %s)", (username, hashed))

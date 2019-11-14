@@ -1,4 +1,4 @@
-from .error import UserError
+from .error import UsernameTaken, BadLogin, PasswordTooShort
 
 import hashlib
 
@@ -17,19 +17,19 @@ class MD5:
         cursor.execute("SELECT password FROM md5 WHERE username=%s", (username,))
         result = cursor.fetchone()
         if result == None:
-            raise UserError("Invalid username or password.")
+            raise BadLogin()
 
         if result[0] != self.hash_password(password):
-            raise UserError("Invalid username or password.")
+            raise BadLogin()
 
     def create_account(self, cursor, username, password):
         if len(password) < 8:
-            raise UserError("Password must contain more than 8 characters.")
+            raise PasswordTooShort()
 
         cursor.execute("SELECT count(*) FROM md5 WHERE username=%s", (username,))
         result = cursor.fetchone()
         if result[0] > 0:
-            raise UserError("Username already taken.")
+            raise UsernameTaken()
 
         hashed = self.hash_password(password)
         cursor.execute("INSERT INTO md5 (username, password) VALUES (%s, %s)", (username, hashed))
