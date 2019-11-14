@@ -1,14 +1,28 @@
 {% extends "layout.html" %}
 {% block title %}{{type.name}} - Sign Up{% endblock %}
+{% block heading %}Sign Up{% endblock %}
 {% block main %}
-<h3>Sign up {{type.name}}</h3>
 <form method="POST" action="/signup/{{type.code}}">
     {% if error %}
-    <p class="error">{{error}}</p>
+    <div class="notification is-danger">{{error}}</div>
     {% endif %}
 
-    <p><label for="username">Username:</label> <input type="text" id="username" name="username"/></p>
-    <p><label for="password">Password:</label> <input type="password" id="password" name="password"/></p>
-    <input type="submit" value="Sign Up"/>
+    <div class="field">
+        <label class="label" for="username">Username</label>
+        <div class="control">
+            <input class="input" type="text" id="username" name="username"/>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label" for="password">Password</label>
+        <div class="control">
+            <input class="input" type="password" id="password" name="password"/>
+        </div>
+    </div>
+
+    <div class="control">
+        <input class="button is-primary" type="submit" value="Sign Up"/>
+    </div>
 </form>
 {% endblock %}

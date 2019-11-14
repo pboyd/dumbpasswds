@@ -8,9 +8,7 @@ from .types import AllTypes, AllTypesDict
 
 @app.route('/')
 def index():
-    return flask.render_template("index.html",
-            types=AllTypes,
-    )
+    return flask.render_template("index.html")
 
 @app.route('/login/<type_code>', methods=['GET', 'POST'])
 def login(type_code):
@@ -24,11 +22,11 @@ def login(type_code):
 
     username = flask.request.form.get('username', '')
     if username == '':
-        return flask.render_template("login.html", error="username is required", type=t)
+        return flask.render_template("login.html", error="Username is required.", type=t)
 
     password = flask.request.form.get('password', '')
     if password == '':
-        return flask.render_template("login.html", error="password is required", type=t)
+        return flask.render_template("login.html", error="Password is required.", type=t)
 
     db = connect()
 
@@ -52,11 +50,11 @@ def signup(type_code):
 
     username = flask.request.form.get('username', '')
     if username == '':
-        return flask.render_template("signup.html", error="username is required", type=t)
+        return flask.render_template("signup.html", error="Username is required.", type=t)
 
     password = flask.request.form.get('password', '')
     if password == '':
-        return flask.render_template("signup.html", error="password is required", type=t)
+        return flask.render_template("signup.html", error="Password is required.", type=t)
 
     db = connect()
 
@@ -68,6 +66,10 @@ def signup(type_code):
         return flask.render_template("signup.html", error=err.message, type=t)
 
     return flask.render_template("signup_success.html", type=t)
+
+@app.context_processor
+def inject_types():
+    return { "types": AllTypes }
 
 def connect():
     return psycopg2.connect('')

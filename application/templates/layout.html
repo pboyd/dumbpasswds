@@ -1,16 +1,29 @@
 <!doctype html>
 <html>
     <head>
-        <title>{% block title %}Dumb Password{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/bulma.min.css">
+        <title>Dumb Password Storage - {% block title %}{% endblock %}</title>
     </head>
     <body>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-            </ul>
+        <nav class="navbar is-light" role="navigation">
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    {% for t in types %}
+                        <a
+                            class="navbar-item{% if t.code is eq(type.code) %} is-active{% endif %}"
+                            href="/login/{{t.code}}">{{t.name}}</a>
+                    {% endfor %}
+                </div>
+            </div>
         </nav>
-        <main>
-            {% block main %}{% endblock %}
+        <main class="section">
+            <h1 class="title">{% block heading %}{% endblock %}</h1>
+            {% block preamble %}{% endblock %}
+            <div class="tile">
+                {% block main %}{% endblock %}
+            </div>
         </main>
     </body>
 </html>

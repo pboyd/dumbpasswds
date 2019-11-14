@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}{{type.name}} - Sign Up{% endblock %}
-{% block main %}
-<h3>Account Created</h3>
-
-<p><a href="/login/{{type.code}}">Log in</a></p>
+{% block heading %}Account Created{% endblock %}
+{% block preamble %}
+<div class="content">
+<p><a href="/login/{{type.code}}">Log In</a></p>
+</div>
 {% endblock %}
